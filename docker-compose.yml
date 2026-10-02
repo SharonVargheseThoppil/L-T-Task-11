@@ -1,0 +1,19 @@
+services:
+  flask-api:
+    build: ./api
+    container_name: task11-flask-api
+    ports:
+      - "5000:5000"
+    restart: unless-stopped
+
+  streamlit-ui:
+    build: ./ui
+    container_name: task11-streamlit-ui
+    ports:
+      - "8501:8501"
+    environment:
+      - API_URL=http://flask-api:5000
+    depends_on:
+      flask-api:
+        condition: service_healthy
+    restart: unless-stopped
